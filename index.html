@@ -22,17 +22,17 @@
             margin: 0; 
             padding: 0; 
             color: var(--text-dark);
-            overflow-x: hidden; /* ডানে-বামে স্ক্রল বন্ধ */
             width: 100%;
+            overflow-x: hidden; /* পুরো পেজ ডানে বামে সরবে না */
         }
 
         /* --- Layout Grid (Desktop) --- */
         .app-container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
             display: grid;
-            grid-template-columns: 300px 1fr 300px; /* ৩ কলাম */
+            grid-template-columns: 300px 1fr 300px;
             gap: 20px;
             align-items: start;
         }
@@ -41,12 +41,11 @@
         header, footer {
             grid-column: 1 / -1;
             background: var(--bg-card);
-            padding: 15px 10px;
+            padding: 15px 5px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            overflow: hidden; /* অ্যাডের বাড়তি অংশ লুকানো */
+            margin-bottom: 10px;
         }
         footer { margin-top: 20px; margin-bottom: 0; }
 
@@ -56,44 +55,57 @@
         }
         .site-logo span { color: var(--primary); }
 
-        /* --- MAIN CONTENT CARD --- */
+        /* --- 🔥 SCROLLABLE AD CONTAINER (MAGIC CSS) 🔥 --- */
+        /* এই ক্লাসের কারণেই অ্যাডগুলো স্ক্রল হবে কিন্তু পেজ নড়বে না */
+        .scroll-ad-box {
+            width: 100%;
+            overflow-x: auto; /* কন্টেন্ট বড় হলে স্ক্রল বার আসবে */
+            -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রল */
+            display: flex;
+            justify-content: center; /* অ্যাড ছোট হলে মাঝখানে থাকবে */
+            padding-bottom: 5px; /* স্ক্রলবারের জন্য একটু জায়গা */
+        }
+        
+        /* স্ক্রলবারের ডিজাইন (অপশনাল - সুন্দর দেখানোর জন্য) */
+        .scroll-ad-box::-webkit-scrollbar { height: 4px; }
+        .scroll-ad-box::-webkit-scrollbar-track { background: #f1f1f1; }
+        .scroll-ad-box::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        /* --- MAIN CONTENT CARD (FIXED) --- */
         .main-card {
             background: var(--bg-card);
-            padding: 30px 20px;
-            border-radius: 16px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex; flex-direction: column; gap: 20px;
-            min-height: 600px; /* হাইট বাড়ানো আছে */
+            min-height: 600px;
             
-            /* বক্সের সাইজ কন্ট্রোল (যাতে পিসিতে বেশি চ্যাপ্টা না হয়) */
-            max-width: 700px; 
+            /* বক্স ফিক্সড রাখা */
             width: 100%;
-            margin: 0 auto; 
+            max-width: 100%;
+            overflow: hidden; /* ভেতরের কিছু বাইরে যাবে না */
         }
 
         h1 { font-size: 22px; color: #334155; margin-bottom: 5px; }
 
-        /* --- Ad Box --- */
-        .ad-box {
-            background: transparent;
-            border: none;
-            padding: 0;
-            display: flex; justify-content: center; align-items: center;
-            margin: 15px auto;
+        /* --- Native Ad Box (Responsive) --- */
+        .native-ad-box {
             width: 100%;
-            max-width: 100%;
+            overflow: hidden;
+            display: flex; justify-content: center;
+            margin: 10px 0;
         }
-        
-        /* --- PROCESSING BOX --- */
+
+        /* --- TIMER & PROCESSING --- */
         .processing-box {
             background: linear-gradient(to bottom, #eff6ff, #ffffff);
             border: 2px solid #dbeafe;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 30px 15px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.05);
+            box-shadow: inset 0 0 10px rgba(37, 99, 235, 0.05);
             margin: 10px 0;
         }
 
@@ -106,14 +118,13 @@
         
         .pulse-ring {
             position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            border: 3px solid var(--primary); opacity: 0.5;
+            border: 4px solid var(--primary); opacity: 0.5;
             animation: pulse-wave 1.5s infinite ease-out;
         }
         .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
         @keyframes pulse-wave { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
 
-        /* Progress Bar */
-        .progress-container { width: 100%; height: 10px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 15px; }
+        .progress-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 15px; }
         .progress-bar {
             height: 100%; width: 0%;
             background: linear-gradient(45deg, #2563eb 25%, #3b82f6 25%, #3b82f6 50%, #2563eb 50%, #2563eb 75%, #3b82f6 75%, #3b82f6);
@@ -126,14 +137,13 @@
         .dl-btn {
             display: none; 
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white; padding: 18px 30px;
+            color: white; padding: 18px 40px;
             text-decoration: none; font-size: 18px; border-radius: 50px;
             font-weight: 700; box-shadow: 0 10px 20px -5px rgba(37,99,235,0.4);
             transition: transform 0.2s; border: none; width: 100%; max-width: 300px;
         }
         .dl-btn:hover { transform: scale(1.02); }
 
-        /* Suspense Button */
         .danger-zone { margin: 20px 0; }
         .danger-btn {
             display: block; width: 100%; max-width: 300px; margin: 0 auto;
@@ -149,26 +159,23 @@
             20%, 40%, 60%, 80% { transform: translate(2px, 0); }
         }
 
-        /* --- MOBILE RESPONSIVE FIX (গুরুত্বপূর্ণ) --- */
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
             .app-container {
                 display: flex;
-                flex-direction: column; /* মোবাইলে সব নিচে নিচে */
+                flex-direction: column;
                 padding: 10px;
                 gap: 15px;
                 width: 100%;
+                overflow-x: hidden;
             }
 
-            /* হেডার ও ফুটার অ্যাড স্কেলিং (যাতে স্ক্রিন না ভাঙ্গে) */
-            header .ad-box, footer .ad-box { 
-                transform: scale(0.45); /* 728px কে ছোট করে মোবাইলে ফিট করা */
-                transform-origin: center top;
-                margin-bottom: -40px; /* স্কেলিং এর কারণে ফাকা জায়গা কমানো */
+            /* Scrollable Ad Alignment for Mobile */
+            .scroll-ad-box {
+                justify-content: flex-start; /* স্ক্রল করার সুবিধার্থে বাম থেকে শুরু হবে */
             }
 
             .main-card {
-                width: 100%;
-                max-width: 100%; /* মোবাইলে ফুল উইডথ */
                 padding: 20px;
                 min-height: auto;
             }
@@ -180,12 +187,6 @@
                 gap: 15px;
                 width: 100%;
             }
-            
-            /* সাইডবার অ্যাড ঠিক করা */
-            .sidebar .ad-box { margin: 0 auto; max-width: 300px; }
-            
-            h1 { font-size: 20px; }
-            .site-logo { font-size: 26px; }
         }
     </style>
 </head>
@@ -196,8 +197,8 @@
         <!-- HEADER -->
         <header>
             <h2 class="site-logo"><span>Fast</span> Download</h2>
-            <div class="ad-box">
-                <!-- Header Ad (Scaled on Mobile) -->
+            <!-- Scrollable Wrapper for Header Ad -->
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
@@ -207,19 +208,19 @@
 
         <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
             </div>
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
             </div>
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
@@ -227,12 +228,12 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN CONTENT (FIXED WIDTH) -->
         <main class="main-card">
-            <h1>ফাইল জেনারেট হচ্ছে...</h1>
+            <h1 style="margin-top:0;">ফাইল জেনারেট হচ্ছে...</h1>
 
             <!-- Top Native -->
-            <div class="ad-box">
+            <div class="native-ad-box">
                 <script async="async" data-cfasync="false" src="https://pl25272314.effectivegatecpm.com/77853915d68a40c947c4ad0442acfe1b/invoke.js"></script>
                 <div id="container-77853915d68a40c947c4ad0442acfe1b"></div>
             </div>
@@ -243,7 +244,7 @@
                     <div class="pulse-ring"></div><div class="pulse-ring"></div>
                     <div class="timer-circle" id="timer">5</div>
                 </div>
-                <p style="font-weight: 700; font-size: 16px; color: var(--primary); margin:0;">অপেক্ষা করুন</p>
+                <p style="font-weight: 700; font-size: 18px; color: var(--primary); margin:0;">অপেক্ষা করুন</p>
                 <p style="font-size: 13px; color: #64748b; margin-top: 5px;">Secure Connection...</p>
                 <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
             </div>
@@ -256,7 +257,7 @@
             </div>
             
             <!-- Banner Middle -->
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                  <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
@@ -268,8 +269,8 @@
                 <a id="final-btn" class="dl-btn" href="#" target="_blank">📥 ডাউনলোড লিংক</a>
             </div>
 
-            <!-- Bottom Native (UPDATED with same Top code) -->
-            <div class="ad-box">
+            <!-- Bottom Native -->
+            <div class="native-ad-box">
                 <script async="async" data-cfasync="false" src="https://pl25272314.effectivegatecpm.com/77853915d68a40c947c4ad0442acfe1b/invoke.js"></script>
                 <div id="container-77853915d68a40c947c4ad0442acfe1b"></div>
             </div>
@@ -277,19 +278,19 @@
 
         <!-- RIGHT SIDEBAR -->
         <aside class="sidebar">
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
             </div>
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
             </div>
-            <div class="ad-box">
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
@@ -299,8 +300,7 @@
 
         <!-- FOOTER -->
         <footer>
-            <div class="ad-box">
-                <!-- Footer Ad (Scaled on Mobile) -->
+            <div class="scroll-ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
