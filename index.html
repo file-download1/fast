@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Download Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;       
+            --primary-dark: #1d4ed8;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-dark: #1e293b;
+        }
+        
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background: var(--bg-body); margin: 0; padding: 0; color: var(--text-dark); }
+
+        /* --- Layout Grid --- */
+        .app-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            align-items: start;
+        }
+
+        /* --- Header & Logo --- */
+        header, footer {
+            grid-column: 1 / -1;
+            background: var(--bg-card);
+            padding: 15px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+        }
+        footer { margin-top: 20px; }
+
+        .site-logo {
+            font-size: 32px; font-weight: 800; color: #334155;
+            margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: -1px;
+        }
+        .site-logo span { color: var(--primary); }
+
+        /* --- Main Content Card --- */
+        .main-card {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; gap: 20px;
+            min-height: 600px;
+        }
+
+        /* --- CLEAN AD BOX STYLES --- */
+        .ad-box {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            margin: 10px 0; position: relative;
+        }
+        
+        .label { display: none; }
+        
+        .h-90 { min-height: 90px; width: 100%; }
+        .h-250 { min-height: 250px; width: 100%; }
+        .h-native { min-height: 100px; width: 100%; }
+
+        /* --- PROCESSING BOX --- */
+        .processing-box {
+            background: linear-gradient(to bottom, #eff6ff, #ffffff);
+            border: 1px solid #dbeafe;
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(37, 99, 235, 0.05);
+        }
+
+        .timer-wrapper {
+            position: relative; width: 80px; height: 80px; margin: 0 auto 15px auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .timer-circle { font-size: 36px; font-weight: 800; color: var(--primary); z-index: 2; }
+        .pulse-ring {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 4px solid var(--primary); opacity: 0.5;
+            animation: pulse-wave 1.5s infinite ease-out;
+        }
+        .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
+
+        @keyframes pulse-wave {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+
+        .progress-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 15px; position: relative; }
+        .progress-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(45deg, #2563eb 25%, #3b82f6 25%, #3b82f6 50%, #2563eb 50%, #2563eb 75%, #3b82f6 75%, #3b82f6);
+            background-size: 20px 20px; border-radius: 10px;
+            animation: stripe-move 1s linear infinite; transition: width 0.2s linear;
+        }
+        @keyframes stripe-move { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
+
+        /* --- Download Button --- */
+        .dl-btn {
+            display: none; 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white; padding: 18px 50px;
+            text-decoration: none; font-size: 20px; border-radius: 50px;
+            font-weight: 700; box-shadow: 0 10px 25px -5px rgba(37,99,235,0.5);
+            transition: transform 0.2s; border: none;
+        }
+        .dl-btn:hover { transform: scale(1.02); }
+
+        /* --- Suspense Button --- */
+        .danger-zone { margin: 25px 0; }
+        .danger-btn {
+            display: inline-block; background-color: #0f172a; color: #ef4444;
+            font-family: 'Courier New', monospace; font-size: 20px; font-weight: 900;
+            padding: 15px 25px; border: 2px solid #ef4444;
+            text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
+            border-radius: 8px; position: relative; overflow: hidden;
+            animation: shake 2.5s infinite;
+        }
+        .danger-btn:hover { background: #ef4444; color: #000; box-shadow: 0 0 20px #ef4444; }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            10%, 30%, 50%, 70%, 90% { transform: translate(-2px, 0); }
+            20%, 40%, 60%, 80% { transform: translate(2px, 0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .app-container { grid-template-columns: 1fr; }
+            .sidebar { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .h-250 { width: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER -->
+        <header>
+            <h2 class="site-logo"><span>Fast</span> Download</h2>
+            <div class="ad-box h-90">
+                <!-- Header Ad 728x90 -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/4839f78ef8d35de690e1eb80b26a8965/invoke.js"></script>
+            </div>
+        </header>
+
+        <!-- LEFT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="ad-box h-250">
+                <!-- Left Sidebar 1 (300x250) -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
+            </div>
+
+            <!-- Social Ad Slot Replaced with Banner (Because Social is popup) -->
+            <div class="ad-box h-250">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
+            </div>
+
+            <div class="ad-box h-250">
+                <!-- Left Sidebar 2 (300x250) -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-card">
+            <h1 style="font-size: 22px; color: #334155;">আপনার ফাইলটি তৈরি করা হচ্ছে...</h1>
+
+            <!-- Top Native -->
+            <div class="ad-box h-native">
+                <script async="async" data-cfasync="false" src="https://pl25272314.effectivegatecpm.com/77853915d68a40c947c4ad0442acfe1b/invoke.js"></script>
+                <div id="container-77853915d68a40c947c4ad0442acfe1b"></div>
+            </div>
+
+            <!-- Processing Area -->
+            <div id="processing-box" class="processing-box">
+                <div class="timer-wrapper">
+                    <div class="pulse-ring"></div><div class="pulse-ring"></div>
+                    <div class="timer-circle" id="timer">5</div>
+                </div>
+                <p style="font-weight: 600; color: var(--primary);">দয়া করে অপেক্ষা করুন</p>
+                <p style="font-size: 13px; color: #64748b; margin-top: -10px;">Secure Connection Established...</p>
+                <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+            </div>
+
+            <!-- Suspense Button -->
+            <div class="danger-zone">
+                <a href="https://www.effectivegatecpm.com/pqsxmygzzt?key=f2803b2c8f26f97d6beec5e1a82aa9d3" class="danger-btn" target="_blank">
+                    ⚠️ DO NOT CLICK HERE 💀
+                </a>
+            </div>
+
+            <!-- Social Ad Slot Replaced with Banner -->
+            <div class="ad-box h-250">
+                 <script type="text/javascript">
+                    atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
+            </div>
+
+            <!-- Download Button -->
+            <div>
+                <a id="final-btn" class="dl-btn" href="#" target="_blank">📥 ডাউনলোড লিংক পান</a>
+            </div>
+
+            <!-- Bottom Native -->
+            <div class="ad-box h-native">
+                <script async="async" data-cfasync="false" src="https://pl26350406.effectivegatecpm.com/aa48dd37ae9a80f4e15738c9648d05f5/invoke.js"></script>
+                <div id="container-aa48dd37ae9a80f4e15738c9648d05f5"></div>
+            </div>
+        </main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="sidebar">
+            <div class="ad-box h-250">
+                <!-- Right Sidebar 1 (300x250) -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
+            </div>
+
+            <!-- Social Ad Slot Replaced with Banner -->
+            <div class="ad-box h-250">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
+            </div>
+
+            <div class="ad-box h-250">
+                <!-- Right Sidebar 2 (300x250) -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
+            </div>
+        </aside>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="ad-box h-90">
+                <!-- Footer Ad 728x90 -->
+                <script type="text/javascript">
+                    atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="https://www.highperformanceformat.com/4839f78ef8d35de690e1eb80b26a8965/invoke.js"></script>
+            </div>
+            <p style="font-size:12px; margin-top:10px;">&copy; 2025 Fast Download Inc.</p>
+        </footer>
+
+    </div>
+
+    <!-- ✅ REAL SOCIAL BAR / POP-UP AD SCRIPT ✅ -->
+    <!-- এটি একদম শেষে একবার বসানো হয়েছে যাতে পপ-আপ সঠিকভাবে কাজ করে -->
+    <script type="text/javascript" src="https://pl25271999.effectivegatecpm.com/3f/c4/4a/3fc44a02e9322868afb4be6ebc1bba64.js"></script>
+
+    <!-- JS Logic -->
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        let target = params.get('link');
+        let timeLeft = 5; const totalTime = 5;
+        
+        const timerEl = document.getElementById('timer');
+        const processBox = document.getElementById('processing-box');
+        const btn = document.getElementById('final-btn');
+        const progressBar = document.getElementById('progress-bar');
+
+        if (target) {
+            try { if (btoa(atob(target)) === target) target = atob(target); } catch (e) {}
+            const countdown = setInterval(() => {
+                timeLeft--; timerEl.innerText = timeLeft;
+                progressBar.style.width = ((totalTime - timeLeft) / totalTime) * 100 + "%";
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    processBox.style.display = 'none'; 
+                    btn.style.display = 'inline-block'; 
+                    btn.href = target;
+                }
+            }, 1000);
+        } else {
+            timerEl.innerText = "!"; progressBar.style.background = "red";
+        }
+    </script>
+</body>
+</html>
