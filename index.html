@@ -18,14 +18,14 @@
         * { box-sizing: border-box; }
         body { font-family: 'Poppins', 'Hind Siliguri', sans-serif; background: var(--bg-body); margin: 0; padding: 0; color: var(--text-dark); }
 
-        /* --- Layout Grid (Desktop) --- */
+        /* --- Layout Grid --- */
         .app-container {
-            max-width: 1200px;
+            max-width: 1280px; /* Width increased slightly */
             margin: 0 auto;
             padding: 20px;
             display: grid;
-            grid-template-columns: 300px 1fr 300px; /* PC তে ৩ কলাম */
-            gap: 20px;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 25px;
             align-items: start;
         }
 
@@ -33,98 +33,101 @@
         header, footer {
             grid-column: 1 / -1;
             background: var(--bg-card);
-            padding: 15px;
+            padding: 20px;
             text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            margin-bottom: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
         }
-        footer { margin-top: 20px; margin-bottom: 0; }
+        footer { margin-top: 30px; margin-bottom: 0; }
 
         .site-logo {
-            font-size: 28px; font-weight: 800; color: #334155;
-            margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: -1px;
+            font-size: 32px; font-weight: 800; color: #334155;
+            margin: 0 0 15px 0; text-transform: uppercase; letter-spacing: -1px;
         }
         .site-logo span { color: var(--primary); }
 
-        /* --- Main Content Card --- */
+        /* --- 🔥 MAIN CONTENT CARD (BIGGER SIZE) 🔥 --- */
         .main-card {
             background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
+            padding: 40px; /* প্যাডিং বাড়ানো হয়েছে */
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex; flex-direction: column; gap: 15px;
-            min-height: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* শ্যাডো বাড়ানো হয়েছে */
+            display: flex; flex-direction: column; gap: 25px;
+            min-height: 750px; /* উচ্চতা অনেক বাড়ানো হয়েছে */
+            justify-content: center; /* কন্টেন্ট মাঝখানে থাকবে */
         }
 
-        /* --- Ad Box Styles --- */
+        h1 { font-size: 24px; color: #334155; margin-bottom: 5px; }
+
+        /* --- Ad Box --- */
         .ad-box {
             background: transparent;
             border: none;
             padding: 0;
             display: flex; justify-content: center; align-items: center;
-            margin: 10px auto; /* Center visually */
+            margin: 15px auto;
             width: 100%;
-            max-width: 100%;
-            overflow: hidden; /* Prevent overflow */
+            overflow: hidden;
         }
         
-        /* --- Processing Box (Timer) --- */
+        /* --- 🔥 PROCESSING BOX (BIGGER TIMER) 🔥 --- */
         .processing-box {
             background: linear-gradient(to bottom, #eff6ff, #ffffff);
-            border: 1px solid #dbeafe;
-            border-radius: 12px;
-            padding: 25px 15px;
+            border: 2px solid #dbeafe; /* বর্ডার মোটা করা হয়েছে */
+            border-radius: 16px;
+            padding: 40px 20px; /* বক্সের ভেতর জায়গা বাড়ানো হয়েছে */
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(37, 99, 235, 0.05);
-            margin: 10px 0;
+            box-shadow: 0 5px 20px rgba(37, 99, 235, 0.08);
+            margin: 20px 0;
         }
 
         .timer-wrapper {
-            position: relative; width: 70px; height: 70px; margin: 0 auto 10px auto;
+            position: relative; width: 90px; height: 90px; /* টাইমার বড় করা হয়েছে */
+            margin: 0 auto 15px auto;
             display: flex; align-items: center; justify-content: center;
         }
-        .timer-circle { font-size: 32px; font-weight: 800; color: var(--primary); z-index: 2; }
+        .timer-circle { font-size: 40px; font-weight: 800; color: var(--primary); z-index: 2; }
         
         .pulse-ring {
             position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            border: 3px solid var(--primary); opacity: 0.5;
+            border: 4px solid var(--primary); opacity: 0.5;
             animation: pulse-wave 1.5s infinite ease-out;
         }
         .pulse-ring:nth-child(2) { animation-delay: 0.5s; }
         @keyframes pulse-wave { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
 
         /* Progress Bar */
-        .progress-container { width: 100%; height: 10px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 15px; }
+        .progress-container { width: 100%; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin-top: 20px; }
         .progress-bar {
             height: 100%; width: 0%;
             background: linear-gradient(45deg, #2563eb 25%, #3b82f6 25%, #3b82f6 50%, #2563eb 50%, #2563eb 75%, #3b82f6 75%, #3b82f6);
-            background-size: 20px 20px; border-radius: 10px;
+            background-size: 25px 25px; border-radius: 10px;
             animation: stripe-move 1s linear infinite; transition: width 0.2s linear;
         }
-        @keyframes stripe-move { 0% { background-position: 0 0; } 100% { background-position: 20px 20px; } }
+        @keyframes stripe-move { 0% { background-position: 0 0; } 100% { background-position: 25px 25px; } }
 
         /* --- Buttons --- */
         .dl-btn {
             display: none; 
             background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            color: white; padding: 15px 30px;
-            text-decoration: none; font-size: 18px; border-radius: 50px;
-            font-weight: 700; box-shadow: 0 8px 20px -5px rgba(37,99,235,0.5);
-            transition: transform 0.2s; border: none; width: 100%; max-width: 300px;
+            color: white; padding: 20px 40px; /* বাটন বড় করা হয়েছে */
+            text-decoration: none; font-size: 20px; border-radius: 50px;
+            font-weight: 700; box-shadow: 0 10px 25px -5px rgba(37,99,235,0.5);
+            transition: transform 0.2s; border: none; width: 100%; max-width: 350px;
         }
         .dl-btn:hover { transform: scale(1.02); }
 
         /* Suspense Button */
-        .danger-zone { margin: 20px 0; }
+        .danger-zone { margin: 25px 0; }
         .danger-btn {
-            display: block; width: 100%; max-width: 320px; margin: 0 auto;
+            display: block; width: 100%; max-width: 350px; margin: 0 auto;
             background-color: #0f172a; color: #ef4444;
-            font-family: 'Courier New', monospace; font-size: 18px; font-weight: 900;
-            padding: 15px; border: 2px solid #ef4444;
-            text-decoration: none; text-transform: uppercase; letter-spacing: 1px;
+            font-family: 'Courier New', monospace; font-size: 20px; font-weight: 900;
+            padding: 18px; border: 3px solid #ef4444;
+            text-decoration: none; text-transform: uppercase; letter-spacing: 2px;
             border-radius: 8px; animation: shake 2.5s infinite;
         }
         @keyframes shake {
@@ -133,38 +136,31 @@
             20%, 40%, 60%, 80% { transform: translate(2px, 0); }
         }
 
-        /* --- 🔥 MOBILE RESPONSIVE CSS (গুরুত্বপূর্ণ পরিবর্তন) 🔥 --- */
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
             .app-container {
-                grid-template-columns: 1fr; /* এক কলাম */
-                padding: 10px; /* গ্যাপ কমানো হয়েছে */
-                gap: 15px;
-            }
-
-            /* হেডার অ্যাড ঠিক করা */
-            header .ad-box { transform: scale(0.9); transform-origin: center; } /* হেডার অ্যাড একটু ছোট করে ফিট করা */
-
-            /* কার্ডের ওয়াইড বাড়ানো */
-            .main-card {
+                grid-template-columns: 1fr;
                 padding: 15px;
-                min-height: auto;
+                gap: 20px;
             }
 
-            /* সাইডবারগুলোকে নিচে নিয়ে আসা */
+            header .ad-box { transform: scale(0.9); transform-origin: center; }
+
+            .main-card {
+                padding: 25px; /* মোবাইলেও প্যাডিং বাড়ানো হয়েছে */
+                min-height: 600px; /* মোবাইলেও লম্বা থাকবে */
+            }
+
             .sidebar {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 15px;
+                gap: 20px;
             }
             
-            /* সাইডবারের অ্যাডগুলো সেন্টারে রাখা */
-            .sidebar .ad-box {
-                margin: 0 auto;
-            }
-
-            h1 { font-size: 20px; }
-            .site-logo { font-size: 24px; }
+            .sidebar .ad-box { margin: 0 auto; }
+            h1 { font-size: 22px; }
+            .site-logo { font-size: 28px; }
         }
     </style>
 </head>
@@ -176,7 +172,6 @@
         <header>
             <h2 class="site-logo"><span>Fast</span> Download</h2>
             <div class="ad-box">
-                <!-- Header Ad -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
@@ -184,26 +179,21 @@
             </div>
         </header>
 
-        <!-- LEFT SIDEBAR (Desktop: Left, Mobile: Bottom Stacked) -->
+        <!-- LEFT SIDEBAR -->
         <aside class="sidebar">
             <div class="ad-box">
-                <!-- Left 1 -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
             </div>
-            
-            <!-- Banner instead of social in box -->
             <div class="ad-box">
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/633acfa15247313629fb7b5c017d0ff3/invoke.js"></script>
             </div>
-
             <div class="ad-box">
-                <!-- Left 2 -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '633acfa15247313629fb7b5c017d0ff3', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
@@ -211,9 +201,9 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN CONTENT (BIG SIZE) -->
         <main class="main-card">
-            <h1 style="margin:0; font-size: 20px; color: #334155;">ফাইল জেনারেট হচ্ছে...</h1>
+            <h1>ফাইল জেনারেট হচ্ছে...</h1>
 
             <!-- Top Native -->
             <div class="ad-box">
@@ -221,14 +211,14 @@
                 <div id="container-77853915d68a40c947c4ad0442acfe1b"></div>
             </div>
 
-            <!-- Timer Area -->
+            <!-- Timer Area (BIGGER) -->
             <div id="processing-box" class="processing-box">
                 <div class="timer-wrapper">
                     <div class="pulse-ring"></div><div class="pulse-ring"></div>
                     <div class="timer-circle" id="timer">5</div>
                 </div>
-                <p style="font-weight: 600; color: var(--primary); margin:0;">অপেক্ষা করুন</p>
-                <p style="font-size: 12px; color: #64748b; margin-top: 5px;">Secure Connection...</p>
+                <p style="font-weight: 700; font-size: 18px; color: var(--primary); margin:0;">দয়া করে অপেক্ষা করুন</p>
+                <p style="font-size: 14px; color: #64748b; margin-top: 5px;">Secure Connection Established...</p>
                 <div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
             </div>
 
@@ -259,26 +249,21 @@
             </div>
         </main>
 
-        <!-- RIGHT SIDEBAR (Desktop: Right, Mobile: Bottom Stacked) -->
+        <!-- RIGHT SIDEBAR -->
         <aside class="sidebar">
             <div class="ad-box">
-                <!-- Right 1 -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
             </div>
-
             <div class="ad-box">
-                 <!-- Banner -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
                 <script type="text/javascript" src="https://www.highperformanceformat.com/9e01120827af44d9bfd8fb1e0894bf6b/invoke.js"></script>
             </div>
-
             <div class="ad-box">
-                <!-- Right 2 -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '9e01120827af44d9bfd8fb1e0894bf6b', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
                 </script>
@@ -289,7 +274,6 @@
         <!-- FOOTER -->
         <footer>
             <div class="ad-box">
-                <!-- Footer Ad -->
                 <script type="text/javascript">
                     atOptions = { 'key' : '4839f78ef8d35de690e1eb80b26a8965', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };
                 </script>
@@ -300,7 +284,7 @@
 
     </div>
 
-    <!-- POP-UP SCRIPT (Correctly placed) -->
+    <!-- POP-UP SCRIPT -->
     <script type="text/javascript" src="https://pl25271999.effectivegatecpm.com/3f/c4/4a/3fc44a02e9322868afb4be6ebc1bba64.js"></script>
 
     <script>
